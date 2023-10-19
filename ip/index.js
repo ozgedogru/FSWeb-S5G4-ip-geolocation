@@ -71,19 +71,6 @@ async function ipAdresimiAl() {
 //kodlar buraya gelecek
 //188.243.48.100 myIP
 
-console.log(ipAdresimiAl(benimIP));
-
-axios
-  .get("https://apis.ergineer.com/ipgeoapi/188.243.48.100")
-
-  .then((response) => {
-    console.log(response);
-
-    const cikti = organiseIP(response);
-    document.querySelector(".cards").append(cikti);
-  })
-  .catch((error) => console.log(error));
-
 const organiseIP = (ipDetay) => {
   const card = document.createElement("div");
   card.className = "card";
@@ -93,7 +80,6 @@ const organiseIP = (ipDetay) => {
     "src",
     `https://flagsapi.com/${ipDetay.data["ülkeKodu"]}/flat/64.png`
   );
-
   card.append(image);
 
   const cardInfo = document.createElement("div");
@@ -133,9 +119,17 @@ const organiseIP = (ipDetay) => {
   return card;
 };
 
-//const maincard = document.querySelector(".cards");
-// maincard.append(organiseIP);
+ipAdresimiAl().then(() => {
+  const url = "https://apis.ergineer.com/ipgeoapi/" + benimIP;
 
-// console.log(organiseIP());
+  axios
+    .get(url)
 
-//.catch((error) => console.log(error));
+    .then((response) => {
+      //console.log(response);
+
+      const cikti = organiseIP(response);
+      document.querySelector(".cards").append(cikti);
+    })
+    .catch((error) => console.log(error));
+});
