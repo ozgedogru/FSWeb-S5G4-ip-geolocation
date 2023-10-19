@@ -1,31 +1,32 @@
 //axios import buraya gelecek
 
-var benimIP;
+const { default: axios } = require("axios");
 
+var benimIP;
 
 // ------------ değiştirmeyin --------------
 // licensed to Ergineer 2022
 require("babel-core/register");
 require("babel-polyfill");
-async function ipAdresimiAl(){
-	await axios({
-		method: 'get',
-		url: 'https://apis.ergineer.com/ipadresim',
-	})
-	.then(function (response) {
-		return response.data
-	})
-	.then(function (a) {
-		benimIP=a
-	});
-}				
+async function ipAdresimiAl() {
+  await axios({
+    method: "get",
+    url: "https://apis.ergineer.com/ipadresim",
+  })
+    .then(function (response) {
+      return response.data;
+    })
+    .then(function (a) {
+      benimIP = a;
+    });
+}
 // ------------ değiştirmeyin --------------
-
 
 /*
 	ADIM 1: axios kullanarak, aşağıdaki URL'ye GET sorgusu atacağız
     (tag içindeki yere kendi ipnizi yazarak URL'yi oluşturun):
     https://apis.ergineer.com/ipgeoapi/<ipniz>
+
 	
 	NOT: Bilgisayarın IP adresini öğrenmek için: https://apis.ergineer.com/ipadresim 
 	ADIM 5'e gelene kadar fonksiyonunuzu test etmek için ip nizi URL'ye manuel olarak ekleyebilirsiniz.
@@ -67,6 +68,66 @@ async function ipAdresimiAl(){
 	Örnek dinamik URL kullanımı: var url = "https://apis.ergineer.com/ipgeoapi/"+benimIP; 
 */
 
-
-
 //kodlar buraya gelecek
+//188.243.48.100 myIP
+
+axios
+  .get("https://apis.ergineer.com/ipgeoapi/188.243.48.100")
+
+  .then((response) => {
+    const cikti = organiseIP(response);
+    document.querySelector(".cards").append(cikti);
+  });
+
+const organiseIP = () => {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  const image = document.createElement("img");
+  image.setAttribute("src", "https://flagsapi.com/RU/shiny/64.png");
+
+  card.append(image);
+
+  const cardInfo = document.createElement("div");
+  cardInfo.className = "card-info";
+  card.append(cardInfo);
+
+  const ip = document.createElement("h3");
+  ip.className = "ip";
+  ip.textContent = "188.243.48.100";
+  cardInfo.append(ip);
+
+  const ulkeAdi = document.createElement("p");
+  ulkeAdi.className = "ulke";
+  ulkeAdi.textContent = "Russia";
+  cardInfo.append(ulkeAdi);
+
+  const konum = document.createElement("p");
+  konum.textContent = 59.9417;
+  cardInfo.append(konum);
+
+  const sehir = document.createElement("p");
+  sehir.textContent = "St.-Petersburg";
+  cardInfo.append(sehir);
+
+  const saat = document.createElement("p");
+  saat.textContent = "Europe/Moscow";
+  cardInfo.append(saat);
+
+  const para = document.createElement("p");
+  para.textContent = "RUB";
+  cardInfo.append(para);
+
+  const isp = document.createElement("p");
+  isp.textContent = "SkyNet LLC";
+  cardInfo.append(isp);
+
+  return card;
+};
+
+//const maincard = document.querySelector(".cards");
+// maincard.append(organiseIP);
+
+// console.log(organiseIP());
+
+//.catch((error) => console.log(error));
