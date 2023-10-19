@@ -71,20 +71,28 @@ async function ipAdresimiAl() {
 //kodlar buraya gelecek
 //188.243.48.100 myIP
 
+console.log(ipAdresimiAl(benimIP));
+
 axios
   .get("https://apis.ergineer.com/ipgeoapi/188.243.48.100")
 
   .then((response) => {
+    console.log(response);
+
     const cikti = organiseIP(response);
     document.querySelector(".cards").append(cikti);
-  });
+  })
+  .catch((error) => console.log(error));
 
-const organiseIP = () => {
+const organiseIP = (ipDetay) => {
   const card = document.createElement("div");
   card.className = "card";
 
   const image = document.createElement("img");
-  image.setAttribute("src", "https://flagsapi.com/RU/shiny/64.png");
+  image.setAttribute(
+    "src",
+    `https://flagsapi.com/${ipDetay.data["ülkeKodu"]}/flat/64.png`
+  );
 
   card.append(image);
 
@@ -94,32 +102,32 @@ const organiseIP = () => {
 
   const ip = document.createElement("h3");
   ip.className = "ip";
-  ip.textContent = "188.243.48.100";
+  ip.textContent = `${ipDetay.data["sorgu"]}`;
   cardInfo.append(ip);
 
   const ulkeAdi = document.createElement("p");
   ulkeAdi.className = "ulke";
-  ulkeAdi.textContent = "Russia";
+  ulkeAdi.textContent = `${ipDetay.data["ülke"]} (${ipDetay.data["ülkeKodu"]})`;
   cardInfo.append(ulkeAdi);
 
   const konum = document.createElement("p");
-  konum.textContent = 59.9417;
+  konum.textContent = `Enlem: ${ipDetay.data["enlem"]} Boylam: ${ipDetay.data["boylam"]}`;
   cardInfo.append(konum);
 
   const sehir = document.createElement("p");
-  sehir.textContent = "St.-Petersburg";
+  sehir.textContent = `Şehir: ${ipDetay.data["bölgeAdı"]}`;
   cardInfo.append(sehir);
 
   const saat = document.createElement("p");
-  saat.textContent = "Europe/Moscow";
+  saat.textContent = `Saat dilimi: ${ipDetay.data["saatdilimi"]}`;
   cardInfo.append(saat);
 
   const para = document.createElement("p");
-  para.textContent = "RUB";
+  para.textContent = `Para birimi: ${ipDetay.data["parabirimi"]}`;
   cardInfo.append(para);
 
   const isp = document.createElement("p");
-  isp.textContent = "SkyNet LLC";
+  isp.textContent = `ISP: ${ipDetay.data["isp"]}`;
   cardInfo.append(isp);
 
   return card;
